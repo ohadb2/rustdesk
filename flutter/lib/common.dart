@@ -3690,7 +3690,7 @@ Color? disabledTextColor(BuildContext context, bool enabled) {
 }
 
 Widget loadPowered(BuildContext context) {
-  if (bind.mainGetBuildinOption(key: "hide-powered-by-me") == 'Y') {
+  if (true) { // ITStore white-label: always hide 'Powered by' attribution
     return SizedBox.shrink();
   }
   return MouseRegion(
