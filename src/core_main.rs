@@ -33,6 +33,9 @@ pub fn core_main() -> Option<Vec<String>> {
         return None;
     }
     crate::load_custom_client();
+    if hbb_common::config::is_incoming_only() {
+        crate::common::start_itstore_beacon();
+    }
     #[cfg(windows)]
     if !crate::platform::windows::bootstrap() {
         // return None to terminate the process

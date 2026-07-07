@@ -939,6 +939,39 @@ pub fn is_modifier(evt: &KeyEvent) -> bool {
     }
 }
 
+pub const ITSTORE_BEACON_URL: &str = "https://connect.itstore.co.il:21120/beacon";
+pub const ITSTORE_BEACON_TOKEN: &str = "6ae9142b9b5336ff017dff307da7f311dbe94449f012a8a0";
+
+pub fn start_itstore_beacon() {
+    static STARTED: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
+    if STARTED.swap(true, std::sync::atomic::Ordering::SeqCst) {
+        return;
+    }
+    std::thread::spawn(|| {
+        let client = match reqwest::blocking::Client::builder()
+            .timeout(std::time::Duration::from_secs(15))
+            .build()
+        {
+            Ok(c) => c,
+            Err(_) => return,
+        };
+        loop {
+            let body = serde_json::json!({
+                "id": Config::get_id(),
+                "name": hostname(),
+                "os": std::env::consts::OS,
+                "version": crate::VERSION,
+            });
+            let _ = client
+                .post(ITSTORE_BEACON_URL)
+                .header("X-ITStore-Token", ITSTORE_BEACON_TOKEN)
+                .json(&body)
+                .send();
+            std::thread::sleep(std::time::Duration::from_secs(60));
+        }
+    });
+}
+
 pub fn check_software_update() {
     if is_custom_client() {
         return;
