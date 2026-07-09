@@ -1776,7 +1776,7 @@ fn get_before_uninstall(kill_self: bool) -> String {
     sc stop \"{app_name}\"
     sc delete \"{app_name}\"
     taskkill /F /IM {broker_exe}
-    taskkill /F /IM \"{app_name}.exe\"{filter}
+    taskkill /F /IM rustdesk.exe{filter}
     reg delete HKEY_CLASSES_ROOT\\.{ext} /f
     reg delete HKEY_CLASSES_ROOT\\{ext} /f
     netsh advfirewall firewall delete rule name=\"{app_name} Service\"
