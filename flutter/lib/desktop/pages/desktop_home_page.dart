@@ -470,11 +470,12 @@ class _DesktopHomePageState extends State<DesktopHomePage>
         });
       } else if (bind.mainIsInstalledLowerVersion()) {
         return buildInstallCard(
-            "Status", "Your installation is lower version.", "Click to upgrade",
-            () async {
+            "Update Available",
+            "A newer version of ITStore Connect is available.\nClick below to update — it only takes a moment.",
+            "Update Now", () async {
           await rustDeskWinManager.closeAllSubWindows();
           bind.mainUpdateMe();
-        });
+        }, centerContent: true);
       }
     } else if (isMacOS) {
       final isOutgoingOnly = bind.isOutgoingOnly();
@@ -579,7 +580,8 @@ class _DesktopHomePageState extends State<DesktopHomePage>
       String? help,
       String? link,
       bool? closeButton,
-      String? closeOption}) {
+      String? closeOption,
+      bool centerContent = false}) {
     if (bind.mainGetBuildinOption(key: kOptionHideHelpCards) == 'Y' &&
         content != 'install_daemon_tip') {
       return const SizedBox();
@@ -632,13 +634,19 @@ class _DesktopHomePageState extends State<DesktopHomePage>
                           : <Widget>[]) +
                       <Widget>[
                         if (content.isNotEmpty)
-                          Text(
-                            translate(content),
-                            style: TextStyle(
-                                height: 1.5,
-                                color: Colors.white,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 13),
+                          Container(
+                            width: double.infinity,
+                            child: Text(
+                              translate(content),
+                              textAlign: centerContent
+                                  ? TextAlign.center
+                                  : TextAlign.start,
+                              style: TextStyle(
+                                  height: 1.5,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 13),
+                            ),
                           ).marginOnly(bottom: 20)
                       ] +
                       (btnText.isNotEmpty
