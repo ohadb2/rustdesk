@@ -471,7 +471,7 @@ class _DesktopHomePageState extends State<DesktopHomePage>
       } else if (bind.mainIsInstalledLowerVersion()) {
         return buildInstallCard(
             "Update Installed Version",
-            "An older version of ITStore Connect is installed on this computer.\nClick below to update it to the version you are running now.",
+            "An older version of ITStoreConnect is installed on this computer.\nClick below to update it to the version you are running now.",
             "Update Now", () async {
           await rustDeskWinManager.closeAllSubWindows();
           bind.mainUpdateMe();
