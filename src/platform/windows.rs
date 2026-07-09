@@ -1430,7 +1430,7 @@ fn get_install_info_with_subkey(subkey: String) -> (String, String, String, Stri
         "%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs\\{}",
         crate::get_app_name()
     );
-    let exe = format!("{}\\rustdesk.exe", path);
+    let exe = format!("{}\\{}.exe", path, crate::get_app_name());
     (subkey, path, start_menu, exe)
 }
 
@@ -1466,7 +1466,7 @@ pub fn rename_exe_cmd(src_exe: &str, path: &str) -> ResultType<String> {
         .ok_or(anyhow!("Can't get file name of {src_exe}"))?
         .to_string_lossy()
         .to_string();
-    let app_name = "rustdesk".to_owned();
+    let app_name = crate::get_app_name().to_lowercase();
     if src_exe_filename.to_lowercase() == format!("{app_name}.exe") {
         Ok("".to_owned())
     } else {
@@ -1776,7 +1776,7 @@ fn get_before_uninstall(kill_self: bool) -> String {
     sc stop \"{app_name}\"
     sc delete \"{app_name}\"
     taskkill /F /IM {broker_exe}
-    taskkill /F /IM rustdesk.exe{filter}
+    taskkill /F /IM \"{app_name}.exe\"{filter}
     reg delete HKEY_CLASSES_ROOT\\.{ext} /f
     reg delete HKEY_CLASSES_ROOT\\{ext} /f
     netsh advfirewall firewall delete rule name=\"{app_name} Service\"
