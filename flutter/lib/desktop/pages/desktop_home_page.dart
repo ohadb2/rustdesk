@@ -483,18 +483,27 @@ class _DesktopHomePageState extends State<DesktopHomePage>
         return buildInstallCard("Permissions", "config_screen", "Configure",
             () async {
           bind.mainIsCanScreenRecording(prompt: true);
+          Process.run('open', [
+            'x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture'
+          ]);
           watchIsCanScreenRecording = true;
         }, help: 'Help', link: translate("doc_mac_permission"));
       } else if (!isOutgoingOnly && !bind.mainIsProcessTrusted(prompt: false)) {
         return buildInstallCard("Permissions", "config_acc", "Configure",
             () async {
           bind.mainIsProcessTrusted(prompt: true);
+          Process.run('open', [
+            'x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility'
+          ]);
           watchIsProcessTrust = true;
         }, help: 'Help', link: translate("doc_mac_permission"));
       } else if (!bind.mainIsCanInputMonitoring(prompt: false)) {
         return buildInstallCard("Permissions", "config_input", "Configure",
             () async {
           bind.mainIsCanInputMonitoring(prompt: true);
+          Process.run('open', [
+            'x-apple.systempreferences:com.apple.preference.security?Privacy_ListenEvent'
+          ]);
           watchIsInputMonitoring = true;
         }, help: 'Help', link: translate("doc_mac_permission"));
       } else if (!isOutgoingOnly &&

@@ -165,7 +165,9 @@ class _InstallPageBodyState extends State<_InstallPageBody>
                   .marginOnly(bottom: 7),
               Option(desktopicon, label: 'Create desktop icon')
                   .marginOnly(bottom: 7),
-              Option(printer, label: 'Install {$appName} Printer'),
+              // ITStore: removed the "Install Printer" option — remote printing isn't
+              // needed for support and it installs a virtual printer driver (extra UAC +
+              // AV noise). `printer` stays false, so no driver is ever installed.
               Container(
                   padding: EdgeInsets.all(12),
                   decoration: BoxDecoration(
