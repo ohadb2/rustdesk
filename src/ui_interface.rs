@@ -1563,7 +1563,11 @@ async fn check_id(
                                 return "Too frequent";
                             }
                             Ok(register_pk_response::Result::NOT_SUPPORT) => {
-                                return "server_not_support";
+                                // ITStoreConnect: our self-hosted OSS hbbs returns NOT_SUPPORT
+                                // for in-app Change ID (a Pro-only server op). Treat it as
+                                // success so the new id is still applied locally via the
+                                // service, which then re-registers under the new id.
+                                ok = true;
                             }
                             Ok(register_pk_response::Result::SERVER_ERROR) => {
                                 return "Server error";
