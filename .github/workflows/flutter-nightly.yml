@@ -1,9 +1,9 @@
 name: Flutter Nightly Build
 
 on:
-  schedule:
-    # schedule build every night
-    - cron: "0 0 * * *"
+  # ITStore: removed the nightly cron schedule — we only build on demand for releases,
+  # and the auto-run's non-essential job failures emailed on every run. Manual
+  # workflow_dispatch is kept so `gh workflow run "Flutter Nightly Build"` still works.
   workflow_dispatch:
 
 jobs:
