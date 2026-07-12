@@ -352,6 +352,7 @@ jobs:
         uses: microsoft/setup-msbuild@6fb02220983dee41ce7ae257b6f4d8f9bf5ed4ce # v2
 
       - name: Build msi
+        continue-on-error: true  # ITStore: MSI not shipped; don't fail the run
         # Builds the MSI for the matrix arch. res/msi (WiX v4 + native CustomActions) carries
         # both x64 and ARM64 platform configs; WcaUtil/DUtil ship arm64 libs. msbuild platform
         # is x64 / ARM64; the produced Package.msi is globbed since its bin/<platform>/ dir varies.
@@ -384,6 +385,7 @@ jobs:
 
   # The fallback for the flutter version, we use Sciter for 32bit Windows.
   build-for-windows-sciter:
+    if: ${{ false }}  # ITStore: sciter/i686 build not shipped
     name: ${{ matrix.job.target }} (${{ matrix.job.os }})
     runs-on: ${{ matrix.job.os }}
     # Temporarily disable this action due to additional test is needed.
@@ -535,7 +537,7 @@ jobs:
             ./SignOutput/rustdesk-*.exe
 
   build-rustdesk-ios:
-    if: ${{ inputs.upload-artifact }}
+    if: ${{ false }}  # ITStore: iOS not shipped
     name: build rustdesk ios ipa
     runs-on: ${{ matrix.job.os }}
     needs: [generate-bridge]
@@ -864,6 +866,7 @@ jobs:
           done
 
       - name: Publish DMG package
+        continue-on-error: true  # ITStore: we build our own DMG locally; don't fail the run
         if: env.UPLOAD_ARTIFACT == 'true'
         uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v1
         with:
@@ -916,6 +919,7 @@ jobs:
           files: rustdesk-${{ env.VERSION }}-unsigned.tar.gz
 
   build-rustdesk-android:
+    if: ${{ false }}  # ITStore: Android not shipped
     needs: [generate-bridge]
     name: build rustdesk android apk ${{ matrix.job.target }}
     runs-on: ${{ matrix.job.os }}
@@ -1392,6 +1396,7 @@ jobs:
             signed-apk/rustdesk-${{ env.VERSION }}-universal${{ env.suffix }}.apk
 
   build-rustdesk-linux:
+    if: ${{ false }}  # ITStore: Linux not shipped
     needs: [generate-bridge]
     name: build rustdesk linux ${{ matrix.job.target }}
     runs-on: ${{ matrix.job.on }}
@@ -1729,7 +1734,7 @@ jobs:
             res/rustdesk-${{ env.VERSION }}*.zst
 
   build-rustdesk-linux-sciter:
-    if: ${{ inputs.upload-artifact }}
+    if: ${{ false }}  # ITStore: Linux sciter not shipped
     runs-on: ${{ matrix.job.on }}
     name: build-rustdesk-linux-sciter ${{ matrix.job.target }}
     strategy:
